@@ -1,0 +1,78 @@
+/* ============================================================
+   合成大奶娃 · 重力感应开关（浮在棋盘左上角）
+   只在触屏设备上由 shake.js 插入；桌面端不出现。
+   ============================================================ */
+
+.tilt-chip {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+  padding: 4px 11px 4px 8px;
+  border: 1px solid rgba(255, 255, 255, .9);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink, #4a3325);
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 3px 10px rgba(140, 96, 56, .22);
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.tilt-chip:active { transform: scale(.97); }
+
+.tilt-ico { font-size: 14px; display: inline-block; }
+
+/* 开着：薄荷绿 */
+.tilt-chip[data-mode="on"] {
+  color: #0f5a3f;
+  background: linear-gradient(135deg, rgba(196, 248, 222, .95), rgba(126, 222, 178, .95));
+}
+
+/* 关着 / 没传感器：淡一点，别抢戏 */
+.tilt-chip[data-mode="off"],
+.tilt-chip[data-mode="none"] { opacity: .72; }
+
+/* 等授权：轻轻呼吸，提示可以点 */
+.tilt-chip[data-mode="need"],
+.tilt-chip[data-mode="denied"] {
+  color: #fff;
+  background: linear-gradient(135deg, #ff8a5b, #ff6b6b 55%, #e14b4b);
+  animation: tiltBreath 1.6s ease-in-out infinite;
+}
+
+@keyframes tiltBreath {
+  0%, 100% { box-shadow: 0 3px 10px rgba(225, 75, 75, .30); transform: scale(1); }
+  50%      { box-shadow: 0 6px 18px rgba(225, 75, 75, .55); transform: scale(1.05); }
+}
+
+/* 猛摇时图标跟着抖 */
+.tilt-ico.wiggle { animation: tiltWiggle .35s ease-in-out; }
+
+@keyframes tiltWiggle {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-22deg) scale(1.15); }
+  45% { transform: rotate(18deg)  scale(1.15); }
+  70% { transform: rotate(-10deg); }
+}
+
+/* 复活币胶囊原来也在左上角：有开关时往下挪一格，两个不叠在一起 */
+.stage.has-tilt .revive-chip { top: 46px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-chip[data-mode="need"],
+  .tilt-chip[data-mode="denied"],
+  .tilt-ico.wiggle { animation: none; }
+}
